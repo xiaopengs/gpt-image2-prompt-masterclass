@@ -3,107 +3,937 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AI 绘图魔法书 - GPT-Image 提示词教程</title>
+<title>GPT Image 2 提示词大师课 | Prompt Masterclass</title>
 <style>
-*{margin:0;padding:0;box-sizing:border-box}
-:root{--bg:#0a0a0f;--card:#13131a;--border:#1e1e2e;--text:#e0e0e6;--dim:#8888a0;--accent:#7c5cfc;--accent2:#5cacfc;--grad:linear-gradient(135deg,#7c5cfc,#5cacffcf)}
-body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--text);line-height:1.7;overflow-x:hidden}
-a{color:var(--accent2);text-decoration:none}
-a:hover{text-decoration:underline}
-.hero{text-align:center;padding:80px 20px 60px;position:relative;overflow:hidden}
-.hero::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:radial-gradient(circle at 50% 60%,rgba(124,92,252,.12) 0%,transparent 50%);pointer-events:none}
-.hero h1{font-size:clamp(2rem,5vw,3.5rem);margin-bottom:12px;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-.hero .sub{font-size:clamp(1rem,2.5vw,1.3rem);color:var(--dim);max-width:600px;margin:0 auto 32px}
-.cta{display:inline-block;padding:14px 36px;background:var(--grad);color:#fff;border-radius:50px;font-size:1.05rem;font-weight:600;transition:transform .2s,box-shadow .2s;border:none;cursor:pointer}
-.cta:hover{transform:translateY(-2px);box-shadow:0 8px 30px rgba(124,92,252,.35);text-decoration:none;color:#fff}
-.section{max-width:960px;margin:0 auto;padding:60px 20px}
-.section h2{text-align:center;font-size:1.8rem;margin-bottom:40px;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-.features{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:20px}
-.feat{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:28px;transition:border-color .3s}
-.feat:hover{border-color:var(--accent)}
-.feat .icon{font-size:2rem;margin-bottom:12px}
-.feat h3{font-size:1.15rem;margin-bottom:8px}
-.feat p{color:var(--dim);font-size:.95rem}
-.outline{columns:2;column-gap:30px}
-@media(max-width:700px){.outline{columns:1}}
-.outline .part{break-inside:avoid;margin-bottom:24px}
-.outline .part h3{font-size:1rem;color:var(--accent2);margin-bottom:8px}
-.outline .part li{color:var(--dim);font-size:.9rem;margin-bottom:4px;list-style:none;padding-left:18px;position:relative}
-.outline .part li::before{content:'›';position:absolute;left:0;color:var(--accent)}
-.audience{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px;text-align:center}
-.aud-item{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:24px 16px}
-.aud-item .emoji{font-size:1.8rem;margin-bottom:8px}
-.aud-item h4{margin-bottom:4px}
-.aud-item p{color:var(--dim);font-size:.85rem}
-footer{text-align:center;padding:40px 20px;border-top:1px solid var(--border);color:var(--dim);font-size:.85rem}
-.stats{display:flex;justify-content:center;gap:40px;flex-wrap:wrap;margin:40px 0}
-.stat{text-align:center}
-.stat .num{font-size:2rem;font-weight:700;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-.stat .label{color:var(--dim);font-size:.9rem}
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap');
+
+:root {
+  --bg: #0a0a0f;
+  --bg2: #12121a;
+  --bg3: #1a1a2e;
+  --accent: #7c3aed;
+  --accent2: #a855f7;
+  --accent3: #06b6d4;
+  --glow: rgba(124, 58, 237, 0.4);
+  --glow2: rgba(6, 182, 212, 0.3);
+  --text: #e2e8f0;
+  --text2: #94a3b8;
+  --text3: #64748b;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Inter', 'Noto Sans SC', -apple-system, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  overflow-x: hidden;
+  line-height: 1.7;
+}
+
+/* ===== Animated Background ===== */
+.bg-grid {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-image:
+    linear-gradient(rgba(124,58,237,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(124,58,237,0.03) 1px, transparent 1px);
+  background-size: 60px 60px;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.orb {
+  position: fixed;
+  border-radius: 50%;
+  filter: blur(80px);
+  pointer-events: none;
+  z-index: 0;
+  animation: orbFloat 20s ease-in-out infinite;
+}
+.orb-1 { width: 600px; height: 600px; background: rgba(124,58,237,0.12); top: -200px; right: -200px; animation-delay: 0s; }
+.orb-2 { width: 500px; height: 500px; background: rgba(6,182,212,0.08); bottom: -150px; left: -150px; animation-delay: -7s; }
+.orb-3 { width: 400px; height: 400px; background: rgba(168,85,247,0.06); top: 50%; left: 50%; animation-delay: -14s; }
+
+@keyframes orbFloat {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33% { transform: translate(30px, -50px) scale(1.1); }
+  66% { transform: translate(-20px, 30px) scale(0.95); }
+}
+
+/* ===== Particles ===== */
+#particles { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; }
+
+/* ===== Nav ===== */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  padding: 1rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  backdrop-filter: blur(20px);
+  background: rgba(10,10,15,0.7);
+  border-bottom: 1px solid rgba(124,58,237,0.1);
+  transition: all 0.3s;
+}
+nav.scrolled { background: rgba(10,10,15,0.95); }
+.nav-logo {
+  font-weight: 800;
+  font-size: 1.2rem;
+  background: linear-gradient(135deg, var(--accent), var(--accent3));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.nav-links { display: flex; gap: 2rem; }
+.nav-links a {
+  color: var(--text2);
+  text-decoration: none;
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: color 0.3s;
+}
+.nav-links a:hover { color: var(--accent2); }
+
+/* ===== Sections ===== */
+section { position: relative; z-index: 1; }
+
+/* ===== Hero ===== */
+.hero {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 8rem 2rem 4rem;
+  position: relative;
+}
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1.2rem;
+  border: 1px solid rgba(124,58,237,0.3);
+  border-radius: 100px;
+  font-size: 0.85rem;
+  color: var(--accent2);
+  margin-bottom: 2rem;
+  background: rgba(124,58,237,0.05);
+  animation: fadeInUp 0.8s ease-out;
+}
+.hero-badge .dot {
+  width: 8px; height: 8px;
+  background: var(--accent2);
+  border-radius: 50%;
+  animation: pulse 2s infinite;
+}
+.hero h1 {
+  font-size: clamp(2.5rem, 7vw, 5rem);
+  font-weight: 900;
+  line-height: 1.1;
+  margin-bottom: 1.5rem;
+  animation: fadeInUp 0.8s ease-out 0.1s both;
+}
+.hero h1 .gradient {
+  background: linear-gradient(135deg, #7c3aed 0%, #a855f7 30%, #06b6d4 70%, #7c3aed 100%);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: shimmer 4s linear infinite;
+}
+.hero .subtitle {
+  font-size: clamp(1.1rem, 2.5vw, 1.5rem);
+  color: var(--text2);
+  max-width: 700px;
+  margin-bottom: 3rem;
+  font-weight: 300;
+  animation: fadeInUp 0.8s ease-out 0.2s both;
+}
+.hero-stats {
+  display: flex;
+  gap: 3rem;
+  margin-bottom: 3rem;
+  animation: fadeInUp 0.8s ease-out 0.3s both;
+}
+.hero-stat {
+  text-align: center;
+}
+.hero-stat .number {
+  font-size: 2.5rem;
+  font-weight: 900;
+  background: linear-gradient(135deg, var(--accent), var(--accent3));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.hero-stat .label {
+  font-size: 0.85rem;
+  color: var(--text3);
+  margin-top: 0.3rem;
+}
+.cta-group {
+  display: flex;
+  gap: 1rem;
+  animation: fadeInUp 0.8s ease-out 0.4s both;
+}
+.btn {
+  padding: 0.9rem 2rem;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.3s;
+  cursor: pointer;
+  border: none;
+}
+.btn-primary {
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  color: white;
+  box-shadow: 0 0 30px var(--glow);
+}
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 50px var(--glow), 0 10px 40px rgba(124,58,237,0.3);
+}
+.btn-secondary {
+  background: transparent;
+  color: var(--text);
+  border: 1px solid rgba(124,58,237,0.3);
+}
+.btn-secondary:hover {
+  border-color: var(--accent);
+  background: rgba(124,58,237,0.05);
+}
+
+/* ===== Typing Effect ===== */
+.prompt-demo {
+  margin-top: 3rem;
+  max-width: 800px;
+  width: 100%;
+  background: var(--bg2);
+  border: 1px solid rgba(124,58,237,0.15);
+  border-radius: 16px;
+  padding: 1.5rem;
+  text-align: left;
+  animation: fadeInUp 0.8s ease-out 0.5s both;
+}
+.prompt-demo .toolbar {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 1rem;
+}
+.prompt-demo .toolbar span {
+  width: 12px; height: 12px;
+  border-radius: 50%;
+}
+.prompt-demo .toolbar span:nth-child(1) { background: #ef4444; }
+.prompt-demo .toolbar span:nth-child(2) { background: #eab308; }
+.prompt-demo .toolbar span:nth-child(3) { background: #22c55e; }
+.prompt-demo .code {
+  font-family: 'SF Mono', 'Fira Code', monospace;
+  font-size: 0.85rem;
+  color: var(--accent3);
+  line-height: 1.8;
+  min-height: 4em;
+}
+.prompt-demo .code .highlight { color: var(--accent2); }
+.prompt-demo .code .string { color: #34d399; }
+.prompt-demo .cursor {
+  display: inline-block;
+  width: 2px;
+  height: 1.1em;
+  background: var(--accent2);
+  vertical-align: text-bottom;
+  animation: blink 1s step-end infinite;
+}
+
+/* ===== Features ===== */
+.features {
+  padding: 6rem 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+.section-header {
+  text-align: center;
+  margin-bottom: 4rem;
+}
+.section-header h2 {
+  font-size: 2.5rem;
+  font-weight: 800;
+  margin-bottom: 1rem;
+}
+.section-header p {
+  color: var(--text2);
+  font-size: 1.1rem;
+  max-width: 600px;
+  margin: 0 auto;
+}
+.feature-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 1.5rem;
+}
+.feature-card {
+  background: linear-gradient(135deg, var(--bg2), var(--bg3));
+  border: 1px solid rgba(124,58,237,0.1);
+  border-radius: 20px;
+  padding: 2rem;
+  transition: all 0.4s;
+  position: relative;
+  overflow: hidden;
+}
+.feature-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--accent), var(--accent3));
+  opacity: 0;
+  transition: opacity 0.4s;
+}
+.feature-card:hover {
+  transform: translateY(-5px);
+  border-color: rgba(124,58,237,0.3);
+  box-shadow: 0 20px 60px rgba(124,58,237,0.1);
+}
+.feature-card:hover::before { opacity: 1; }
+.feature-icon {
+  width: 50px; height: 50px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  margin-bottom: 1.2rem;
+  background: rgba(124,58,237,0.1);
+}
+.feature-card h3 {
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin-bottom: 0.8rem;
+}
+.feature-card p {
+  color: var(--text2);
+  font-size: 0.95rem;
+  line-height: 1.7;
+}
+
+/* ===== Curriculum ===== */
+.curriculum {
+  padding: 6rem 2rem;
+  background: var(--bg2);
+  position: relative;
+}
+.curriculum::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--accent), transparent);
+}
+.curriculum-inner {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+.module {
+  margin-bottom: 2rem;
+  border: 1px solid rgba(124,58,237,0.1);
+  border-radius: 16px;
+  overflow: hidden;
+  transition: all 0.3s;
+}
+.module:hover {
+  border-color: rgba(124,58,237,0.25);
+}
+.module-header {
+  padding: 1.5rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  background: var(--bg3);
+  transition: background 0.3s;
+}
+.module-header:hover { background: rgba(124,58,237,0.08); }
+.module-header .left {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+.module-num {
+  width: 36px; height: 36px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 0.9rem;
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  color: white;
+}
+.module-header h3 { font-size: 1.1rem; font-weight: 700; }
+.module-header .meta {
+  display: flex; gap: 1rem;
+  color: var(--text3);
+  font-size: 0.85rem;
+}
+.module-chapters {
+  padding: 0 2rem;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.4s ease, padding 0.4s;
+  background: var(--bg);
+}
+.module.active .module-chapters {
+  max-height: 600px;
+  padding: 1.5rem 2rem;
+}
+.chapter-item {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  padding: 0.8rem 0;
+  border-bottom: 1px solid rgba(124,58,237,0.05);
+  color: var(--text2);
+  font-size: 0.95rem;
+}
+.chapter-item:last-child { border-bottom: none; }
+.chapter-item .check {
+  width: 20px; height: 20px;
+  border-radius: 6px;
+  border: 2px solid var(--text3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.7rem;
+  flex-shrink: 0;
+}
+.chapter-item:hover { color: var(--text); }
+.chapter-item:hover .check { border-color: var(--accent); }
+
+/* ===== Audience ===== */
+.audience {
+  padding: 6rem 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+.audience-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1.5rem;
+}
+.audience-card {
+  text-align: center;
+  padding: 2rem 1.5rem;
+  border-radius: 16px;
+  border: 1px solid rgba(124,58,237,0.1);
+  background: var(--bg2);
+  transition: all 0.3s;
+}
+.audience-card:hover {
+  border-color: rgba(124,58,237,0.3);
+  transform: translateY(-3px);
+}
+.audience-card .emoji { font-size: 2.5rem; margin-bottom: 1rem; }
+.audience-card h4 { font-weight: 700; margin-bottom: 0.5rem; }
+.audience-card p { color: var(--text2); font-size: 0.9rem; }
+
+/* ===== Before/After ===== */
+.compare {
+  padding: 6rem 2rem;
+  background: var(--bg2);
+}
+.compare-inner {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+.compare-grid {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  gap: 2rem;
+  align-items: start;
+}
+.compare-box {
+  padding: 2rem;
+  border-radius: 16px;
+  border: 1px solid rgba(124,58,237,0.1);
+}
+.compare-box.before { background: rgba(239,68,68,0.03); border-color: rgba(239,68,68,0.15); }
+.compare-box.after { background: rgba(34,197,94,0.03); border-color: rgba(34,197,94,0.15); }
+.compare-box h4 { margin-bottom: 1rem; font-size: 1.1rem; }
+.compare-box.before h4 { color: #f87171; }
+.compare-box.after h4 { color: #4ade80; }
+.compare-box pre {
+  font-family: 'SF Mono', 'Fira Code', monospace;
+  font-size: 0.82rem;
+  line-height: 1.7;
+  white-space: pre-wrap;
+  color: var(--text2);
+}
+.compare-arrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  color: var(--accent);
+  padding-top: 2rem;
+}
+
+/* ===== CTA Final ===== */
+.cta-final {
+  padding: 8rem 2rem;
+  text-align: center;
+  position: relative;
+}
+.cta-final h2 {
+  font-size: 2.5rem;
+  font-weight: 800;
+  margin-bottom: 1rem;
+}
+.cta-final p {
+  color: var(--text2);
+  font-size: 1.1rem;
+  margin-bottom: 2.5rem;
+  max-width: 500px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* ===== Footer ===== */
+footer {
+  padding: 3rem 2rem;
+  border-top: 1px solid rgba(124,58,237,0.1);
+  text-align: center;
+  color: var(--text3);
+  font-size: 0.85rem;
+}
+footer a {
+  color: var(--accent2);
+  text-decoration: none;
+}
+footer .links {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  margin-bottom: 1rem;
+}
+
+/* ===== Animations ===== */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes shimmer {
+  to { background-position: 200% center; }
+}
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(1.2); }
+}
+@keyframes blink {
+  50% { opacity: 0; }
+}
+
+.scroll-reveal {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.scroll-reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 768px) {
+  .nav-links { display: none; }
+  .hero-stats { gap: 1.5rem; }
+  .hero-stat .number { font-size: 1.8rem; }
+  .compare-grid { grid-template-columns: 1fr; }
+  .compare-arrow { transform: rotate(90deg); padding: 0; }
+  .feature-grid { grid-template-columns: 1fr; }
+  .cta-group { flex-direction: column; }
+}
 </style>
 </head>
 <body>
 
-<div class="hero">
-  <h1>🎨 AI 绘图魔法书</h1>
-  <p class="sub">零基础用 GPT-Image 玩转专业级图片生成<br>从「不知道写什么」到「大师级提示词」的系统化教程</p>
-  <div class="stats">
-    <div class="stat"><div class="num">12</div><div class="label">章节</div></div>
-    <div class="stat"><div class="num">55K+</div><div class="label">字数</div></div>
-    <div class="stat"><div class="num">5</div><div class="label">实战场景</div></div>
-    <div class="stat"><div class="num">30+</div><div class="label">即用模板</div></div>
-  </div>
-  <a href="https://github.com/EvoLinkAI/gpt-image2-course" class="cta">🚀 开始学习</a>
-</div>
+<div class="bg-grid"></div>
+<div class="orb orb-1"></div>
+<div class="orb orb-2"></div>
+<div class="orb orb-3"></div>
+<canvas id="particles"></canvas>
 
-<div class="section">
-  <h2>✨ 课程特色</h2>
-  <div class="features">
-    <div class="feat"><div class="icon">🎯</div><h3>痛点驱动</h3><p>从 5 大典型小白痛点出发，对症下药，不做无用功</p></div>
-    <div class="feat"><div class="icon">📐</div><h3>万能公式</h3><p>主体+场景+风格+光线+构图+细节，一个公式通吃所有场景</p></div>
-    <div class="feat"><div class="icon">🎬</div><h3>5 大场景实战</h3><p>人像摄影、海报插画、角色设计、UI截图、创意混搭全覆盖</p></div>
-    <div class="feat"><div class="icon">📚</div><h3>案例驱动</h3><p>基于 70+ 精选案例深度拆解，每章学练结合</p></div>
-    <div class="feat"><div class="icon">💰</div><h3>商业变现</h3><p>最后一篇教你用 AI 绘图赚到第一笔钱</p></div>
+<nav>
+  <div class="nav-logo">🎨 Prompt Masterclass</div>
+  <div class="nav-links">
+    <a href="#features">课程特色</a>
+    <a href="#curriculum">课程目录</a>
+    <a href="#audience">适合谁学</a>
+    <a href="#compare">效果对比</a>
   </div>
-</div>
+</nav>
 
-<div class="section">
-  <h2>📑 课程大纲</h2>
-  <div class="outline">
-    <div class="part">
-      <h3>📘 第一篇 · 知己知彼</h3>
-      <ul><li>零基础用户画像与痛点诊断</li><li>五大典型画像深度剖析</li><li>自我诊断问卷</li></ul>
+<!-- ===== HERO ===== -->
+<section class="hero">
+  <div class="hero-badge">
+    <span class="dot"></span>
+    2026 · 基于精选案例库 100+ Prompts
+  </div>
+  <h1>
+    <span class="gradient">GPT Image 2</span><br>提示词大师课
+  </h1>
+  <p class="subtitle">从零基础到大师级，55,000 字系统教程。掌握万能公式、美学描述、五大场景实战，让 AI 画出你脑海中的画面。</p>
+  <div class="hero-stats">
+    <div class="hero-stat">
+      <div class="number" data-count="55000">0</div>
+      <div class="label">字完整教程</div>
     </div>
-    <div class="part">
-      <h3>📗 第二篇 · 入门篇</h3>
-      <ul><li>第2章：提示词万能公式入门</li><li>第3章：美学描述入门</li><li>第4章：专业词汇速查</li></ul>
+    <div class="hero-stat">
+      <div class="number" data-count="12">0</div>
+      <div class="label">章节递进</div>
     </div>
-    <div class="part">
-      <h3>📙 第三篇 · 五大场景实战</h3>
-      <ul><li>第5章：📸 人像摄影大师课</li><li>第6章：🖼️ 海报与插画设计</li><li>第7章：🎭 角色设计与设定集</li><li>第8章：📱 UI与社交媒体截图</li><li>第9章：🔮 创意混搭与社区实验</li></ul>
-    </div>
-    <div class="part">
-      <h3>📕 第四篇 · 大师篇</h3>
-      <ul><li>第10章：提示词工程进阶</li><li>第11章：商业落地变现</li><li>第12章：建立个人知识库</li></ul>
+    <div class="hero-stat">
+      <div class="number" data-count="100">0</div>
+      <div class="label">案例拆解</div>
     </div>
   </div>
-</div>
+  <div class="cta-group">
+    <a href="https://github.com/xiaopengs/gpt-image2-prompt-masterclass" class="btn btn-primary">⭐ GitHub 开源免费</a>
+    <a href="#curriculum" class="btn btn-secondary">📖 查看大纲</a>
+  </div>
+  <div class="prompt-demo">
+    <div class="toolbar"><span></span><span></span><span></span></div>
+    <div class="code" id="typing-area"></div>
+  </div>
+</section>
 
-<div class="section">
-  <h2>🎯 适合谁学</h2>
-  <div class="audience">
-    <div class="aud-item"><div class="emoji">🎨</div><h4>设计师</h4><p>用 AI 加速创意原型</p></div>
-    <div class="aud-item"><div class="emoji">📱</div><h4>自媒体人</h4><p>批量产出高质量配图</p></div>
-    <div class="aud-item"><div class="emoji">🛒</div><h4>电商卖家</h4><p>零成本生成产品图</p></div>
-    <div class="aud-item"><div class="emoji">🎓</div><h4>学生</h4><p>零基础快速入门</p></div>
-    <div class="aud-item"><div class="emoji">好奇的你</div><h4>任何人</h4><p>想玩转 AI 绘图就够</p></div>
+<!-- ===== FEATURES ===== -->
+<section class="features scroll-reveal" id="features">
+  <div class="section-header">
+    <h2>为什么这门课不一样</h2>
+    <p>不是网上那些"10个神奇提示词"的口水文章，而是一套系统化的方法论。</p>
   </div>
-</div>
+  <div class="feature-grid">
+    <div class="feature-card">
+      <div class="feature-icon">🧠</div>
+      <h3>万能公式驱动</h3>
+      <p>六维度拆解法：主体 + 动作 + 场景 + 光线 + 风格 + 质量。一套公式打天下，不再"凭感觉"写提示词。</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🎨</div>
+      <h3>美学描述专项训练</h3>
+      <p>色彩理论、构图法则、氛围营造——把"感觉"变成可写出来的专业词汇，告别"好看但说不出哪里好"。</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">📸</div>
+      <h3>五大场景实战模板</h3>
+      <p>人像摄影、城市海报、UI 截图、产品摄影、创意实验——每个场景都有完整模板和逐句解析。</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🔬</div>
+      <h3>100+ 案例深度拆解</h3>
+      <p>每个案例不是简单丢 prompt，而是逐句分析"为什么这么写"，培养你的提示词审美和工程思维。</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">⚡</div>
+      <h3>专业词汇速查表</h3>
+      <p>摄影术语、美学词汇、风格关键词、光线类型——中英对照，随查随用，新手秒变内行。</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">💰</div>
+      <h3>商业变现路径</h3>
+      <p>自媒体配图、电商产品图、设计工作流——学会后不止是玩，还能用来赚钱。</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===== COMPARE ===== -->
+<section class="compare scroll-reveal" id="compare">
+  <div class="compare-inner">
+    <div class="section-header">
+      <h2>写对提示词，差距有多大？</h2>
+      <p>同样的场景，不同的提示词写法，效果天差地别</p>
+    </div>
+    <div class="compare-grid">
+      <div class="compare-box before">
+        <h4>❌ 新手写法</h4>
+        <pre>a beautiful girl in a convenience store, neon lights, realistic, 8K, masterpiece, highly detailed</pre>
+      </div>
+      <div class="compare-arrow">→</div>
+      <div class="compare-box after">
+        <h4>✅ 大师写法</h4>
+        <pre>35mm film photography, harsh fluorescent lighting mixed with colorful neon signs, authentic film grain, cinematic street editorial, intimate medium shot, ultra-realistic skin texture with specular highlights, natural dewy makeup, glossy pink lips, messy high ponytail with loose strands, oversized white shirt unbuttoned, seductive leaning pose against glass door, authentic 35mm color grading, no plastic skin, no airbrushing</pre>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== CURRICULUM ===== -->
+<section class="curriculum scroll-reveal" id="curriculum">
+  <div class="curriculum-inner">
+    <div class="section-header">
+      <h2>完整课程路线</h2>
+      <p>4 篇 12 章，从"完全不会"到"教别人写"</p>
+    </div>
+
+    <div class="module active">
+      <div class="module-header">
+        <div class="left">
+          <div class="module-num">P1</div>
+          <h3>知己知彼 — 小白调研与痛点分析</h3>
+        </div>
+        <div class="meta"><span>~5,000字</span></div>
+      </div>
+      <div class="module-chapters">
+        <div class="chapter-item"><span class="check">1</span> 零基础用户画像与痛点诊断</div>
+      </div>
+    </div>
+
+    <div class="module">
+      <div class="module-header">
+        <div class="left">
+          <div class="module-num">P2</div>
+          <h3>筑基篇 — 万能公式与专业词汇</h3>
+        </div>
+        <div class="meta"><span>~12,000字</span></div>
+      </div>
+      <div class="module-chapters">
+        <div class="chapter-item"><span class="check">2</span> 提示词万能公式：六维度拆解法</div>
+        <div class="chapter-item"><span class="check">3</span> 专业词汇速查：摄影 · 美学 · 风格 · 光线</div>
+        <div class="chapter-item"><span class="check">4</span> 美学描述入门：色彩 · 构图 · 氛围</div>
+      </div>
+    </div>
+
+    <div class="module">
+      <div class="module-header">
+        <div class="left">
+          <div class="module-num">P3</div>
+          <h3>实战篇 — 五大场景深度训练</h3>
+        </div>
+        <div class="meta"><span>~22,000字</span></div>
+      </div>
+      <div class="module-chapters">
+        <div class="chapter-item"><span class="check">5</span> 人像摄影提示词大师课</div>
+        <div class="chapter-item"><span class="check">6</span> 海报与插画创作</div>
+        <div class="chapter-item"><span class="check">7</span> UI 截图与社交媒体模拟</div>
+        <div class="chapter-item"><span class="check">8</span> 产品摄影与商业应用</div>
+      </div>
+    </div>
+
+    <div class="module">
+      <div class="module-header">
+        <div class="left">
+          <div class="module-num">P4</div>
+          <h3>大师篇 — 系统方法论与商业落地</h3>
+        </div>
+        <div class="meta"><span>~12,000字</span></div>
+      </div>
+      <div class="module-chapters">
+        <div class="chapter-item"><span class="check">9</span> 高级技巧与创意实验</div>
+        <div class="chapter-item"><span class="check">10</span> 提示词工程学：系统化方法论</div>
+        <div class="chapter-item"><span class="check">11</span> 行业应用与变现路径</div>
+        <div class="chapter-item"><span class="check">A</span> 附录：100个模板 · 术语表 · 资源</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== AUDIENCE ===== -->
+<section class="audience scroll-reveal" id="audience">
+  <div class="section-header">
+    <h2>适合这些人</h2>
+    <p>无论你是谁，只要你对"用文字生成图片"感兴趣</p>
+  </div>
+  <div class="audience-grid">
+    <div class="audience-card">
+      <div class="emoji">👩‍🎨</div>
+      <h4>设计师</h4>
+      <p>快速出概念图，提升工作效率10x</p>
+    </div>
+    <div class="audience-card">
+      <div class="emoji">📱</div>
+      <h4>自媒体人</h4>
+      <p>配图不用找，一句话生成爆款素材</p>
+    </div>
+    <div class="audience-card">
+      <div class="emoji">🛒</div>
+      <h4>电商卖家</h4>
+      <p>产品图自己出，省掉摄影费</p>
+    </div>
+    <div class="audience-card">
+      <div class="emoji">🎓</div>
+      <h4>学生 / 爱好者</h4>
+      <p>零门槛上手，打开新世界的大门</p>
+    </div>
+    <div class="audience-card">
+      <div class="emoji">💻</div>
+      <h4>开发者</h4>
+      <p>集成到产品中，AI-native 工作流</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===== CTA Final ===== -->
+<section class="cta-final scroll-reveal">
+  <h2>开始你的提示词之旅</h2>
+  <p>完全免费，开源在 GitHub。Star ⭐ 支持一下，让更多人看到。</p>
+  <a href="https://github.com/xiaopengs/gpt-image2-prompt-masterclass" class="btn btn-primary" style="font-size:1.1rem; padding:1rem 3rem;">
+    ⭐ Star on GitHub
+  </a>
+</section>
 
 <footer>
-  <p>基于 <a href="https://github.com/EvoLinkAI/awesome-gpt-image-2-prompts">awesome-gpt-image-2-prompts</a> 精选案例库设计</p>
-  <p style="margin-top:8px">Made with ❤️ by <a href="https://github.com/EvoLinkAI">EvoLinkAI</a> · CC BY 4.0</p>
+  <div class="links">
+    <a href="https://github.com/xiaopengs/gpt-image2-prompt-masterclass">GitHub</a>
+    <a href="https://github.com/EvoLinkAI/awesome-gpt-image-2-prompts">案例来源</a>
+  </div>
+  <p>基于 <a href="https://github.com/EvoLinkAI/awesome-gpt-image-2-prompts">awesome-gpt-image-2-prompts</a> 精选案例 · CC BY 4.0 开源协议</p>
 </footer>
+
+<script>
+// ===== Particles =====
+const canvas = document.getElementById('particles');
+const ctx = canvas.getContext('2d');
+let particles = [];
+
+function resizeCanvas() {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+}
+resizeCanvas();
+window.addEventListener('resize', resizeCanvas);
+
+class Particle {
+  constructor() {
+    this.reset();
+  }
+  reset() {
+    this.x = Math.random() * canvas.width;
+    this.y = Math.random() * canvas.height;
+    this.size = Math.random() * 2 + 0.5;
+    this.speedX = (Math.random() - 0.5) * 0.3;
+    this.speedY = (Math.random() - 0.5) * 0.3;
+    this.opacity = Math.random() * 0.5 + 0.1;
+  }
+  update() {
+    this.x += this.speedX;
+    this.y += this.speedY;
+    if (this.x < 0 || this.x > canvas.width || this.y < 0 || this.y > canvas.height) this.reset();
+  }
+  draw() {
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+    ctx.fillStyle = `rgba(124, 58, 237, ${this.opacity})`;
+    ctx.fill();
+  }
+}
+
+for (let i = 0; i < 80; i++) particles.push(new Particle());
+
+function animateParticles() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  particles.forEach(p => { p.update(); p.draw(); });
+  // Draw lines between close particles
+  for (let i = 0; i < particles.length; i++) {
+    for (let j = i + 1; j < particles.length; j++) {
+      const dx = particles[i].x - particles[j].x;
+      const dy = particles[i].y - particles[j].y;
+      const dist = Math.sqrt(dx * dx + dy * dy);
+      if (dist < 120) {
+        ctx.beginPath();
+        ctx.moveTo(particles[i].x, particles[i].y);
+        ctx.lineTo(particles[j].x, particles[j].y);
+        ctx.strokeStyle = `rgba(124, 58, 237, ${0.06 * (1 - dist / 120)})`;
+        ctx.stroke();
+      }
+    }
+  }
+  requestAnimationFrame(animateParticles);
+}
+animateParticles();
+
+// ===== Typing Effect =====
+const prompts = [
+  '35mm film photography, harsh fluorescent lighting,\nauthentic film grain, cinematic editorial style...',
+  'Fujifilm Pro 400H aesthetic, soft pastel tones,\ngentle highlight roll-off, fine film grain...',
+  '9:16 vertical, Korean idol portrait,\nsoft black mist filter, lowered contrast...',
+  'Ultra-realistic product photography,\ncold sparkling water, condensation droplets...',
+];
+let promptIndex = 0;
+let charIndex = 0;
+let isDeleting = false;
+const typingArea = document.getElementById('typing-area');
+
+function type() {
+  const current = prompts[promptIndex];
+  if (!isDeleting) {
+    charIndex++;
+    if (charIndex > current.length) {
+      isDeleting = true;
+      setTimeout(type, 2000);
+      return;
+    }
+  } else {
+    charIndex--;
+    if (charIndex < 0) {
+      isDeleting = false;
+      charIndex = 0;
+      promptIndex = (promptIndex + 1) % prompts.length;
+      setTimeout(type, 500);
+      return;
+    }
+  }
+  typingArea.innerHTML = current.substring(0, charIndex) + '<span class="cursor"></span>';
+  setTimeout(type, isDeleting ? 30 : 60);
+}
+setTimeout(type, 1000);
+
+// ===== Counter Animation =====
+function animateCounters() {
+  document.querySelectorAll('[data-count]').forEach(el => {
+    const target = parseInt(el.dataset.count);
+    const duration = 2000;
+    const start = performance.now();
+    function update(now) {
+      const progress = Math.min((now - start) / duration, 1);
+      const eased = 1 - Math.pow(1 - progress, 3);
+      const current = Math.floor(eased * target);
+      el.textContent = current.toLocaleString() + (target >= 10000 ? '+' : '+');
+      if (progress < 1) requestAnimationFrame(update);
+    }
+    requestAnimationFrame(update);
+  });
+}
+
+// ===== Scroll Reveal =====
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+      if (entry.target.querySelector('[data-count]')) animateCounters();
+    }
+  });
+}, { threshold: 0.1 });
+
+document.querySelectorAll('.scroll-reveal').forEach(el => observer.observe(el));
+
+// ===== Nav Scroll Effect =====
+window.addEventListener('scroll', () => {
+  document.querySelector('nav').classList.toggle('scrolled', window.scrollY > 50);
+});
+
+// ===== Module Accordion =====
+document.querySelectorAll('.module-header').forEach(header => {
+  header.addEventListener('click', () => {
+    const module = header.parentElement;
+    module.classList.toggle('active');
+  });
+});
+</script>
 
 </body>
 </html>
