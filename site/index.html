@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI 绘图魔法书 - GPT-Image 提示词教程</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#0a0a0f;--card:#13131a;--border:#1e1e2e;--text:#e0e0e6;--dim:#8888a0;--accent:#7c5cfc;--accent2:#5cacfc;--grad:linear-gradient(135deg,#7c5cfc,#5cacffcf)}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--text);line-height:1.7;overflow-x:hidden}
+a{color:var(--accent2);text-decoration:none}
+a:hover{text-decoration:underline}
+.hero{text-align:center;padding:80px 20px 60px;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:radial-gradient(circle at 50% 60%,rgba(124,92,252,.12) 0%,transparent 50%);pointer-events:none}
+.hero h1{font-size:clamp(2rem,5vw,3.5rem);margin-bottom:12px;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero .sub{font-size:clamp(1rem,2.5vw,1.3rem);color:var(--dim);max-width:600px;margin:0 auto 32px}
+.cta{display:inline-block;padding:14px 36px;background:var(--grad);color:#fff;border-radius:50px;font-size:1.05rem;font-weight:600;transition:transform .2s,box-shadow .2s;border:none;cursor:pointer}
+.cta:hover{transform:translateY(-2px);box-shadow:0 8px 30px rgba(124,92,252,.35);text-decoration:none;color:#fff}
+.section{max-width:960px;margin:0 auto;padding:60px 20px}
+.section h2{text-align:center;font-size:1.8rem;margin-bottom:40px;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.features{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:20px}
+.feat{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:28px;transition:border-color .3s}
+.feat:hover{border-color:var(--accent)}
+.feat .icon{font-size:2rem;margin-bottom:12px}
+.feat h3{font-size:1.15rem;margin-bottom:8px}
+.feat p{color:var(--dim);font-size:.95rem}
+.outline{columns:2;column-gap:30px}
+@media(max-width:700px){.outline{columns:1}}
+.outline .part{break-inside:avoid;margin-bottom:24px}
+.outline .part h3{font-size:1rem;color:var(--accent2);margin-bottom:8px}
+.outline .part li{color:var(--dim);font-size:.9rem;margin-bottom:4px;list-style:none;padding-left:18px;position:relative}
+.outline .part li::before{content:'›';position:absolute;left:0;color:var(--accent)}
+.audience{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px;text-align:center}
+.aud-item{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:24px 16px}
+.aud-item .emoji{font-size:1.8rem;margin-bottom:8px}
+.aud-item h4{margin-bottom:4px}
+.aud-item p{color:var(--dim);font-size:.85rem}
+footer{text-align:center;padding:40px 20px;border-top:1px solid var(--border);color:var(--dim);font-size:.85rem}
+.stats{display:flex;justify-content:center;gap:40px;flex-wrap:wrap;margin:40px 0}
+.stat{text-align:center}
+.stat .num{font-size:2rem;font-weight:700;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.stat .label{color:var(--dim);font-size:.9rem}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <h1>🎨 AI 绘图魔法书</h1>
+  <p class="sub">零基础用 GPT-Image 玩转专业级图片生成<br>从「不知道写什么」到「大师级提示词」的系统化教程</p>
+  <div class="stats">
+    <div class="stat"><div class="num">12</div><div class="label">章节</div></div>
+    <div class="stat"><div class="num">55K+</div><div class="label">字数</div></div>
+    <div class="stat"><div class="num">5</div><div class="label">实战场景</div></div>
+    <div class="stat"><div class="num">30+</div><div class="label">即用模板</div></div>
+  </div>
+  <a href="https://github.com/EvoLinkAI/gpt-image2-course" class="cta">🚀 开始学习</a>
+</div>
+
+<div class="section">
+  <h2>✨ 课程特色</h2>
+  <div class="features">
+    <div class="feat"><div class="icon">🎯</div><h3>痛点驱动</h3><p>从 5 大典型小白痛点出发，对症下药，不做无用功</p></div>
+    <div class="feat"><div class="icon">📐</div><h3>万能公式</h3><p>主体+场景+风格+光线+构图+细节，一个公式通吃所有场景</p></div>
+    <div class="feat"><div class="icon">🎬</div><h3>5 大场景实战</h3><p>人像摄影、海报插画、角色设计、UI截图、创意混搭全覆盖</p></div>
+    <div class="feat"><div class="icon">📚</div><h3>案例驱动</h3><p>基于 70+ 精选案例深度拆解，每章学练结合</p></div>
+    <div class="feat"><div class="icon">💰</div><h3>商业变现</h3><p>最后一篇教你用 AI 绘图赚到第一笔钱</p></div>
+  </div>
+</div>
+
+<div class="section">
+  <h2>📑 课程大纲</h2>
+  <div class="outline">
+    <div class="part">
+      <h3>📘 第一篇 · 知己知彼</h3>
+      <ul><li>零基础用户画像与痛点诊断</li><li>五大典型画像深度剖析</li><li>自我诊断问卷</li></ul>
+    </div>
+    <div class="part">
+      <h3>📗 第二篇 · 入门篇</h3>
+      <ul><li>第2章：提示词万能公式入门</li><li>第3章：美学描述入门</li><li>第4章：专业词汇速查</li></ul>
+    </div>
+    <div class="part">
+      <h3>📙 第三篇 · 五大场景实战</h3>
+      <ul><li>第5章：📸 人像摄影大师课</li><li>第6章：🖼️ 海报与插画设计</li><li>第7章：🎭 角色设计与设定集</li><li>第8章：📱 UI与社交媒体截图</li><li>第9章：🔮 创意混搭与社区实验</li></ul>
+    </div>
+    <div class="part">
+      <h3>📕 第四篇 · 大师篇</h3>
+      <ul><li>第10章：提示词工程进阶</li><li>第11章：商业落地变现</li><li>第12章：建立个人知识库</li></ul>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <h2>🎯 适合谁学</h2>
+  <div class="audience">
+    <div class="aud-item"><div class="emoji">🎨</div><h4>设计师</h4><p>用 AI 加速创意原型</p></div>
+    <div class="aud-item"><div class="emoji">📱</div><h4>自媒体人</h4><p>批量产出高质量配图</p></div>
+    <div class="aud-item"><div class="emoji">🛒</div><h4>电商卖家</h4><p>零成本生成产品图</p></div>
+    <div class="aud-item"><div class="emoji">🎓</div><h4>学生</h4><p>零基础快速入门</p></div>
+    <div class="aud-item"><div class="emoji">好奇的你</div><h4>任何人</h4><p>想玩转 AI 绘图就够</p></div>
+  </div>
+</div>
+
+<footer>
+  <p>基于 <a href="https://github.com/EvoLinkAI/awesome-gpt-image-2-prompts">awesome-gpt-image-2-prompts</a> 精选案例库设计</p>
+  <p style="margin-top:8px">Made with ❤️ by <a href="https://github.com/EvoLinkAI">EvoLinkAI</a> · CC BY 4.0</p>
+</footer>
+
+</body>
+</html>
